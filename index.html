@@ -276,25 +276,27 @@
         function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
 
         function sendToTelegram() {
-            const phone = document.getElementById('user-phone').value;
-            if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
-            if (!phone || phone.length < 9) return alert("Iltimos, telefon raqamingizni to'liq kiriting!");
-            
-            let msg = "♨️ *YANGI BUYURTMA (SAYTDAN)*\n\n";
-            msg += `📱 *Tel:* \`${phone}\`\n`;
-            msg += `------------------------\n`;
-            Object.values(cart).forEach(i => {
-                msg += `✅ *${i.name}* (${i.qty} dona) — ${(i.price * i.qty).toLocaleString()} s.\n`;
-            });
-            msg += `\n💰 *JAMI:* ${document.getElementById('total-price').innerText}\n`;
-            msg += `\n📍 *Manzil:* Bog'ishamol shifoxonasi orqasi`;
-            
-            // @OlchaKafebot ga yuborish
-            window.open(`https://t.me/OlchaKafebot?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+    const phone = document.getElementById('user-phone').value;
+    if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
+    if (!phone || phone.length < 9) return alert("Iltimos, telefon raqamingizni to'liq kiriting!");
+    
+    let msg = "♨️ YANGI BUYURTMA\n\n";
+    msg += `📱 Tel: ${phone}\n`;
+    msg += `------------------------\n`;
+    Object.values(cart).forEach(i => {
+        msg += `✅ ${i.name} (${i.qty} dona) — ${(i.price * i.qty).toLocaleString()} s.\n`;
+    });
+    msg += `\n💰 JAMI: ${document.getElementById('total-price').innerText}`;
 
-        // Sahifa yuklanganda hamma taomlarni chiqarish
-        window.onload = () => renderMenu('all');
-    </script>
+    // WebApp orqali botga ma'lumot yuborish
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.sendData(msg); 
+        window.Telegram.WebApp.close(); // Xabar ketgach sayt yopiladi
+    } else {
+        // Agar brauzerda ochilgan bo'lsa, eski usulda yuboradi
+        window.open(`https://t.me/OlchaKafebot?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+}
+</script>
 </body>
 </html>
