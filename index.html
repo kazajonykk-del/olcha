@@ -177,7 +177,7 @@
             // ICHIMLIK
             { id: 18, name: "Pepsi 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1629203851020-9dd4ac787364?w=500" },
             { id: 19, name: "Coca-Cola 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=500" },
-            { id: 20, name: "Choy (Krujka)", price: 4000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
+            { id: 20, name: "Choy (Krujka)", price: 3000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
         ];
 
         let cart = {};
@@ -275,21 +275,25 @@
 
         function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
         src="https://telegram.org/js/telegram-web-app.js">
+// ... (avvalgi kodlar o'z joyida qoladi)
 
 function sendToTelegram() {
     const phone = document.getElementById('user-phone').value;
     const tg = window.Telegram.WebApp;
 
+    // 1. Tekshirish
     if (Object.keys(cart).length === 0) {
-        tg.showAlert("Savat bo'sh!");
+        if(tg.showAlert) tg.showAlert("Savat bo'sh!"); 
+        else alert("Savat bo'sh!");
         return;
     }
     if (!phone || phone.length < 9) {
-        tg.showAlert("Iltimos, telefon raqamingizni to'g'ri kiriting!");
+        if(tg.showAlert) tg.showAlert("Iltimos, telefon raqamingizni kiriting!");
+        else alert("Iltimos, telefon raqamingizni kiriting!");
         return;
     }
     
-    // Ma'lumotlarni JSON formatida yuboramiz (Python qabul qilishi oson bo'ladi)
+    // 2. Buyurtma ma'lumotlarini yig'ish
     const orderData = {
         phone: phone,
         items: Object.values(cart).map(i => ({
@@ -300,11 +304,17 @@ function sendToTelegram() {
         total: document.getElementById('total-price').innerText
     };
 
-    // Telegramga yuborish
-    tg.sendData(JSON.stringify(orderData));
-    tg.close();
+    // 3. Botga yuborish
+    // Bu funksiya ma'lumotni to'g'ridan-to'g'ri Python botingizga JSON formatida uzatadi
+    if (tg.sendData) {
+        tg.sendData(JSON.stringify(orderData));
+        tg.close();
+    } else {
+        // Agar WebApp orqali ochilmagan bo'lsa (brauzerda bo'lsa)
+        let msg = `Yangi buyurtma:\nTel: ${phone}\nJami: ${orderData.total}`;
+        window.open(`https://t.me/OlchaKafebot?text=${encodeURIComponent(msg)}`, '_blank');
+    }
 }
-
     </script>
 </body>
 </html>
