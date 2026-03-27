@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <style>
+   <style>
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050505; color: #fff; overflow-x: hidden; }
         .font-oswald { font-family: 'Oswald', sans-serif; }
@@ -52,22 +52,22 @@
     <nav class="sticky top-0 z-50 glass px-4 py-4 shadow-2xl">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="font-oswald text-2xl md:text-3xl text-yellow-500 tracking-tighter uppercase flex items-center gap-2">
-                <span class="animate__animated animate__pulse animate__infinite">🍒</span> Olcha Cafe
+                <span>🍒</span> Olcha Cafe
             </h1>
-            <button onclick="toggleCart()" id="cart-btn" class="relative bg-yellow-500 text-black p-3.5 rounded-2xl shadow-lg transition-all active:scale-90 cart-pulse-active">
+            <button onclick="toggleCart()" id="cart-btn" class="relative bg-yellow-500 text-black p-3.5 rounded-2xl shadow-lg transition-all active:scale-90">
                 <i class="fas fa-shopping-basket text-xl"></i>
                 <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-[11px] w-6 h-6 flex items-center justify-center rounded-full font-bold border-2 border-black">0</span>
             </button>
         </div>
         
         <div class="flex overflow-x-auto gap-2.5 mt-4 no-scrollbar border-t border-white/5 pt-3.5 px-1 md:justify-center">
-            <button onclick="filterMenu('all')" class="cat-btn active px-6 py-2.5 rounded-xl text-xs uppercase whitespace-nowrap transition-all duration-300">Hammasi</button>
-            <button onclick="filterMenu('lavash')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap transition-all duration-300">Lavash</button>
-            <button onclick="filterMenu('burger')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap transition-all duration-300">Burger</button>
-            <button onclick="filterMenu('doner')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap transition-all duration-300">Doner</button>
-            <button onclick="filterMenu('hotdog')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap transition-all duration-300">Hot-Dog</button>
-            <button onclick="filterMenu('kfc')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap transition-all duration-300">KFC & Fri</button>
-            <button onclick="filterMenu('ichimlik')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap transition-all duration-300">Ichimlik</button>
+            <button onclick="filterMenu('all')" class="cat-btn active px-6 py-2.5 rounded-xl text-xs uppercase whitespace-nowrap">Hammasi</button>
+            <button onclick="filterMenu('lavash')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap">Lavash</button>
+            <button onclick="filterMenu('burger')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap">Burger</button>
+            <button onclick="filterMenu('doner')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap">Doner</button>
+            <button onclick="filterMenu('hotdog')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap">Hot-Dog</button>
+            <button onclick="filterMenu('kfc')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap">KFC & Fri</button>
+            <button onclick="filterMenu('ichimlik')" class="cat-btn px-5 py-2.5 rounded-xl glass text-xs uppercase whitespace-nowrap">Ichimlik</button>
         </div>
     </nav>
 
@@ -75,78 +75,36 @@
         <div id="menu-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5 md:gap-7"></div>
     </main>
 
-    <footer class="glass mt-12 p-12 rounded-t-[3.5rem] border-t border-yellow-500/20">
-        <div class="container mx-auto grid md:grid-cols-2 gap-12">
-            <div class="animate__animated animate__fadeInLeft">
-                <h3 class="font-oswald text-3xl text-yellow-500 mb-8 uppercase tracking-tight">Aloqa & Manzil</h3>
-                <div class="space-y-6">
-                    <a href="tel:+998917677455" class="block group">
-                        <p class="text-3xl font-black text-white flex items-center gap-4 group-hover:text-yellow-400 transition">
-                            <i class="fas fa-phone-alt text-yellow-500 group-hover:animate__animated group-hover:animate__tada"></i> 
-                            +998 91 767 74 55
-                        </p>
-                    </a>
-                    <p class="text-lg opacity-80 font-bold flex items-center gap-4">
-                        <i class="fas fa-map-marker-alt text-red-500 text-2xl"></i> Bog'ishamol shifoxonasi orqasida
-                    </p>
-                    <div class="flex gap-5 pt-5">
-                        <a href="https://t.me/OlchaKafebot" target="_blank" class="w-14 h-14 glass rounded-full flex items-center justify-center text-blue-400 text-2xl hover:bg-blue-500 hover:text-white transition active:scale-90"><i class="fab fa-telegram-plane"></i></a>
-                        <a href="https://instagram.com/OLCHA_KAFE" target="_blank" class="w-14 h-14 glass rounded-full flex items-center justify-center text-pink-500 text-2xl hover:bg-pink-500 hover:text-white transition active:scale-90"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="animate__animated animate__fadeInRight bg-black/50 p-3 rounded-3xl border border-white/5 shadow-inner overflow-hidden h-72">
-                <iframe 
-                    width="100%" 
-                    height="100%" 
-                    frameborder="0" 
-                    scrolling="no" 
-                    marginheight="0" 
-                    marginwidth="0" 
-                    class="rounded-2xl grayscale"
-                    src="https://maps.google.com/maps?q=41.017056,71.205139&hl=uz&z=17&amp;output=embed">
-                </iframe>
-            </div>
-        </div>
-        <div class="text-center mt-12 border-t border-white/5 pt-8">
-            <p class="text-[10px] text-gray-600 uppercase tracking-[0.5em] font-bold">Admin: Nozimxon • Buyurtmalar avtomatik ravishda botga yo'naltiriladi.</p>
-        </div>
-    </footer>
-
     <div id="cart-modal" class="fixed inset-0 z-[100] hidden flex justify-end bg-black/95 backdrop-blur-md">
         <div class="w-full max-w-md bg-[#080808] h-full flex flex-col shadow-3xl animate__animated animate__fadeInRight animate__faster">
-            <div class="p-7 flex justify-between items-center border-b border-white/10 bg-yellow-500/5">
-                <h2 class="font-oswald text-2xl text-yellow-500 uppercase tracking-tight">Sizning Buyurtmangiz</h2>
-                <button onclick="toggleCart()" class="text-5xl text-gray-600 hover:text-red-500 transition active:scale-75">&times;</button>
+            <div class="p-7 flex justify-between items-center border-b border-white/10">
+                <h2 class="font-oswald text-2xl text-yellow-500 uppercase">Savatcha</h2>
+                <button onclick="toggleCart()" class="text-5xl text-gray-600 hover:text-red-500 transition">×</button>
             </div>
             
             <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
 
-            <div class="p-8 border-t border-white/10 bg-black rounded-t-3xl">
+            <div class="p-8 border-t border-white/10 bg-black">
                 <div class="mb-7">
-                    <label class="block text-[11px] uppercase font-bold text-gray-500 mb-2.5 ml-1 tracking-widest">Telefon raqamingiz:</label>
+                    <label class="block text-[11px] uppercase font-bold text-gray-500 mb-2.5 ml-1">Telefon raqamingiz:</label>
                     <input type="tel" id="user-phone" placeholder="+998 90 123 45 67" 
-                           class="w-full bg-white/5 border border-white/10 p-4.5 rounded-2xl text-white text-lg focus:outline-none focus:border-yellow-500 focus:bg-yellow-500/5 transition">
+                           class="w-full bg-white/5 border border-white/10 p-4.5 rounded-2xl text-white text-lg focus:border-yellow-500 outline-none">
                 </div>
 
-                <div class="flex justify-between items-end mb-7 p-3 glass rounded-xl border-white/5 shadow-inner">
-                    <span class="text-gray-500 text-xs font-bold uppercase tracking-wider">Umumiy summa:</span>
+                <div class="flex justify-between items-end mb-7 p-3 glass rounded-xl border-white/5">
+                    <span class="text-gray-500 text-xs font-bold uppercase">Jami summa:</span>
                     <span id="total-price" class="text-3xl font-black text-yellow-500">0 so'm</span>
                 </div>
                 
-                <button onclick="sendToTelegram()" class="w-full bg-green-600 hover:bg-green-500 text-white py-5.5 rounded-2xl font-black text-xl shadow-2xl shadow-green-900/30 active:scale-95 transition-all uppercase tracking-tight flex items-center justify-center gap-3">
-                    <i class="fab fa-telegram-plane text-2xl"></i> Buyurtmani Tasdiqlash
+                <button onclick="sendToTelegram()" class="w-full bg-green-600 hover:bg-green-500 text-white py-5.5 rounded-2xl font-black text-xl uppercase tracking-tight flex items-center justify-center gap-3">
+                    <i class="fab fa-telegram-plane"></i> Tasdiqlash
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // AOS Animatsiyalarini ishga tushirish (agar kerak bo'lsa, kardlar uchun data-aos qo'shish mumkin)
-        // AOS.init({ duration: 800, once: true });
-
-        const menuData = [
+const menuData = [
             // LAVASH
             { id: 1, name: "Lavash Classic", price: 26000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500"  },
             { id: 2, name: "Lavash Sirli", price: 30000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
@@ -177,11 +135,10 @@
             // ICHIMLIK
             { id: 18, name: "Pepsi 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1629203851020-9dd4ac787364?w=500" },
             { id: 19, name: "Coca-Cola 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=500" },
-            { id: 20, name: "Choy (Krujka)", price: 2000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
+            { id: 20, name: "Choy (Krujka)", price: 3000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
         ];
 
         let cart = {};
-
         function renderMenu(category = 'all') {
             const grid = document.getElementById('menu-grid');
             const filtered = category === 'all' ? menuData : menuData.filter(x => x.cat === category);
@@ -201,44 +158,17 @@
                     </div>
                 </div>`).join('');
         }
-
         function filterMenu(cat) {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             renderMenu(cat);
         }
 
-        function addToCart(id, buttonEl) {
+        function addToCart(id) {
             const p = menuData.find(x => x.id === id);
             cart[id] = cart[id] ? { ...cart[id], qty: cart[id].qty + 1 } : { ...p, qty: 1 };
-            
-            // --- ANIMATSIYA QISMI ---
-            const cartBtn = document.getElementById('cart-btn');
-            const cartCount = document.getElementById('cart-count');
-            
-            // 1. Tugma bosilganda savat tugmasi Bump qiladi va Pulsatsiya to'xtaydi
-            cartBtn.classList.add('cart-animate');
-            cartBtn.classList.remove('cart-pulse-active');
-            
-            // 2. Hisoblagich Bump qiladi
-            cartCount.classList.add('count-bump');
-            
-            // 3. Taom kardidagi plyus tugmasi yashil bo'lib o'zgaradi
-            buttonEl.classList.remove('bg-yellow-500');
-            buttonEl.classList.add('bg-green-500', 'text-white');
-            buttonEl.innerHTML = '<i class="fas fa-check text-xs"></i>';
-
-            // 4. Animatsiyalarni to'xtatish va asliga qaytarish (0.8 soniyadan keyin)
-            setTimeout(() => {
-                cartBtn.classList.remove('cart-animate');
-                cartBtn.classList.add('cart-pulse-active'); // Pulsatsiyani qaytarish
-                cartCount.classList.remove('count-bump');
-                
-                buttonEl.classList.remove('bg-green-500', 'text-white');
-                buttonEl.classList.add('bg-yellow-500', 'text-black');
-                buttonEl.innerHTML = '<i class="fas fa-plus text-xs"></i>';
-            }, 800);
-            
+            document.getElementById('cart-btn').classList.add('cart-animate');
+            setTimeout(() => document.getElementById('cart-btn').classList.remove('cart-animate'), 800);
             updateUI();
         }
 
@@ -250,19 +180,19 @@
             Object.values(cart).forEach(item => {
                 total += item.price * item.qty;
                 count += item.qty;
-                html += `<div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 animate__animated animate__fadeInLeft animate__faster">
-                        <img src="${item.img}" class="w-14 h-14 rounded-xl object-cover border border-white/10">
+                html += `<div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                        <img src="${item.img}" class="w-14 h-14 rounded-xl object-cover">
                         <div class="flex-1">
-                            <h4 class="text-xs font-bold uppercase text-white/90 tracking-tight">${item.name}</h4>
+                            <h4 class="text-xs font-bold uppercase">${item.name}</h4>
                             <p class="text-yellow-500 text-xs font-black mt-0.5">${item.price.toLocaleString()} s.</p>
                         </div>
-                        <div class="flex items-center gap-3 bg-black rounded-full p-1 border border-white/5 shadow-inner">
-                            <button onclick="changeQty(${item.id}, -1)" class="w-8 h-8 rounded-full bg-white/10 hover:bg-red-500/20 hover:text-red-500 transition active:scale-75">-</button>
+                        <div class="flex items-center gap-3 bg-black rounded-full p-1">
+                            <button onclick="changeQty(${item.id}, -1)" class="w-8 h-8 rounded-full bg-white/10">-</button>
                             <span class="font-bold text-sm text-white w-3 text-center">${item.qty}</span>
-                            <button onclick="changeQty(${item.id}, 1)" class="w-8 h-8 rounded-full bg-white/10 hover:bg-green-500/20 hover:text-green-500 transition active:scale-75">+</button>
+                            <button onclick="changeQty(${item.id}, 1)" class="w-8 h-8 rounded-full bg-white/10">+</button>
                         </div></div>`;
             });
-            itemsCont.innerHTML = html || '<p class="text-center opacity-20 py-20 text-xs uppercase tracking-[0.3em] font-bold">Savat bo\'sh...</p>';
+            itemsCont.innerHTML = html || '<p class="text-center opacity-20 py-20 text-xs uppercase font-bold">Savat bo\'sh...</p>';
             cartCount.innerText = count;
             totalPrice.innerText = total.toLocaleString() + " so'm";
         }
@@ -274,23 +204,27 @@
         }
 
         function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
-function sendToTelegram() {
-    const phone = document.getElementById('user-phone').value;
-    if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
-    if (!phone || phone.length < 9) return alert("Telefon raqamingizni kiriting!");
-    
-    let msg = "♨️ YANGI BUYURTMA\n\n";
-    msg += `📱 Tel: ${phone}\n`;
-    msg += `------------------------\n`;
-    Object.values(cart).forEach(i => {
-        msg += `✅ ${i.name} (${i.qty} dona) — ${(i.price * i.qty).toLocaleString()} s.\n`;
-    });
-    msg += `\n💰 JAMI: ${document.getElementById('total-price').innerText}`;
 
-    // Sayt brauzerda ochilgani uchun Telegram botga xabar yuborish linki:
-    const bot_username = "OlchaKafebot"; 
-    window.open(`https://t.me/${bot_username}?text=${encodeURIComponent(msg)}`, '_blank');
-}
+        // --- ASOSIY FUNKSIYA ---
+        function sendToTelegram() {
+            const phone = document.getElementById('user-phone').value;
+            if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
+            if (!phone || phone.length < 9) return alert("Telefon raqamingizni kiriting!");
+            
+            let msg = "♨️ YANGI BUYURTMA\n\n";
+            msg += `📱 Tel: ${phone}\n`;
+            msg += `------------------------\n`;
+            Object.values(cart).forEach(i => {
+                msg += `✅ ${i.name} (${i.qty} dona) — ${(i.price * i.qty).toLocaleString()} s.\n`;
+            });
+            msg += `\n💰 JAMI: ${document.getElementById('total-price').innerText}`;
+
+            // BU QATOR 100% ISHLAYDI:
+            const bot_username = "OlchaKafebot"; 
+            window.location.href = `tg://resolve?domain=${bot_username}&text=${encodeURIComponent(msg)}`;
+        }
+
+        window.onload = () => renderMenu('all');
     </script>
 </body>
 </html>
