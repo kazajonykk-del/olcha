@@ -274,8 +274,7 @@
         }
 
         function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
-
-        function sendToTelegram() {
+function sendToTelegram() {
     const phone = document.getElementById('user-phone').value;
     if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
     if (!phone || phone.length < 9) return alert("Iltimos, telefon raqamingizni to'liq kiriting!");
@@ -297,6 +296,6 @@
         window.open(`https://t.me/OlchaKafebot?text=${encodeURIComponent(msg)}`, '_blank');
     }
 }
-</script>
+    </script>
 </body>
 </html>
