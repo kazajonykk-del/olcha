@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
-<head>
+<head script src="https://telegram.org/js/telegram-web-app.js"></script >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olcha Cafe | Professional Menu</title>
@@ -177,7 +177,7 @@
             // ICHIMLIK
             { id: 18, name: "Pepsi 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1629203851020-9dd4ac787364?w=500" },
             { id: 19, name: "Coca-Cola 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=500" },
-            { id: 20, name: "Choy (Krujka)", price: 3000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
+            { id: 20, name: "Choy (Krujka)", price: 4000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
         ];
 
         let cart = {};
@@ -274,28 +274,37 @@
         }
 
         function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
+        src="https://telegram.org/js/telegram-web-app.js">
+
 function sendToTelegram() {
     const phone = document.getElementById('user-phone').value;
-    if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
-    if (!phone || phone.length < 9) return alert("Iltimos, telefon raqamingizni to'liq kiriting!");
-    
-    let msg = "♨️ YANGI BUYURTMA\n\n";
-    msg += `📱 Tel: ${phone}\n`;
-    msg += `------------------------\n`;
-    Object.values(cart).forEach(i => {
-        msg += `✅ ${i.name} (${i.qty} dona) — ${(i.price * i.qty).toLocaleString()} s.\n`;
-    });
-    msg += `\n💰 JAMI: ${document.getElementById('total-price').innerText}`;
+    const tg = window.Telegram.WebApp;
 
-    // WebApp orqali botga ma'lumot yuborish
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.sendData(msg); 
-        window.Telegram.WebApp.close(); // Xabar ketgach sayt yopiladi
-    } else {
-        // Agar brauzerda ochilgan bo'lsa, eski usulda yuboradi
-        window.open(`https://t.me/OlchaKafebot?text=${encodeURIComponent(msg)}`, '_blank');
+    if (Object.keys(cart).length === 0) {
+        tg.showAlert("Savat bo'sh!");
+        return;
     }
+    if (!phone || phone.length < 9) {
+        tg.showAlert("Iltimos, telefon raqamingizni to'g'ri kiriting!");
+        return;
+    }
+    
+    // Ma'lumotlarni JSON formatida yuboramiz (Python qabul qilishi oson bo'ladi)
+    const orderData = {
+        phone: phone,
+        items: Object.values(cart).map(i => ({
+            name: i.name,
+            qty: i.qty,
+            price: i.price * i.qty
+        })),
+        total: document.getElementById('total-price').innerText
+    };
+
+    // Telegramga yuborish
+    tg.sendData(JSON.stringify(orderData));
+    tg.close();
 }
+
     </script>
 </body>
 </html>
