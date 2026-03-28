@@ -221,38 +221,39 @@
             renderMenu(cat);
         }
 
+
         async function sendToTelegram() {
-            const name = document.getElementById('user-name').value;
-            const phone = document.getElementById('user-phone').value;
-            
-            if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
-            if (!name) return alert("Iltimos, ismingizni kiriting!");
-            if (!phone || phone.length < 9) return alert("Telefon raqamingizni to'liq yozing!");
+    const name = document.getElementById('user-name').value;
+    const phone = document.getElementById('user-phone').value;
+    const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+    
+    // Xatoliklar tuzatildi: qo'shtirnoqlar va username tekshiruvi
+    const username = tgUser?.username ? `@${tgUser.username}` : "mavjud emas";
 
-            let msg = "♨️ **YANGI BUYURTMA**\n\n";
-            msg += `👤 **Mijoz:** ${name}\n`;
-            msg += `📱 **Tel:** ${phone}\n`;
-            msg += `----------------------------\n`;
-            Object.values(cart).forEach(i => msg += `✅ ${i.name} (${i.qty}x) — ${(i.price*i.qty).toLocaleString()} s.\n`);
-            msg += `\n💰 **JAMI: ${document.getElementById('total-price').innerText}**`;
+    if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
+    if (!name) return alert("Ismingizni kiriting!");
+    if (!phone || phone.length < 9) return alert("Telefonni to'liq yozing!");
 
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: adminId, text: msg, parse_mode: "Markdown" })
-                });
-                if (response.ok) {
-                    alert("Buyurtmangiz yuborildi! ✅");
-                    cart = {};
-                    updateUI();
-                    toggleCart();
-                    if (window.Telegram?.WebApp) window.Telegram.WebApp.close();
-                }
-            } catch (e) { alert("Xatolik yuz berdi!"); }
-        }
+    let msg = `♨️ **YANGI BUYURTMA**\n\n`;
+    msg += `👤 **Mijoz:** ${name}\n`;
+    msg += `📱 **Tel:** ${phone}\n`;
+    msg += `🆔 **Telegram:** ${username}\n`;
+    msg += `----------------------------\n`;
 
-        renderMenu();
-    </script>
+    Object.values(cart).forEach(i => {
+        msg += `✅ ${i.name} (${i.qty}x) — ${(i.price * i.qty).toLocaleString()} s.\n`;
+    });
+
+    msg += `\n💰 **JAMI: ${document.getElementById('total-price').innerText}**`;
+
+    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: adminId, text: msg, parse_mode: "Markdown" })
+    });
+    alert("Buyurtma qabul qilindi! ✅");
+}
+
+        </Script>
 </body>
 </html>
