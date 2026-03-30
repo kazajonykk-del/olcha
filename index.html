@@ -294,47 +294,52 @@
                 }, () => { alert("Ruxsat berilmadi!"); btn.innerText = "Xatolik!"; });
             }
         }
+// ... (menuData va boshqa o'zgaruvchilar o'zgarishsiz qoladi) ...
 
-        async function sendToTelegram() {
-            const name = document.getElementById('user-name').value;
-            const phone = document.getElementById('user-phone').value;
-            const location = document.getElementById('user-location').value;
+async function sendToTelegram() {
+    const name = document.getElementById('user-name').value;
+    const phone = document.getElementById('user-phone').value;
+    const location = document.getElementById('user-location').value;
 
-            if (Object.keys(cart).length === 0 || !name || !phone) return alert("Ma'lumotlarni to'ldiring!");
-            if (deliveryType === 'delivery' && (location === 'Olib ketish' || !location.includes('http'))) {
-                return alert("Iltimos, lokatsiyani yuboring!");
-            }
+    // Tekshirishlar
+    if (Object.keys(cart).length === 0 || !name || !phone) {
+        return alert("Iltimos, ismingiz va telefon raqamingizni kiriting!");
+    }
+    
+    if (deliveryType === 'delivery' && (location === 'Olib ketish' || !location.includes('http'))) {
+        return alert("Yetkazib berish uchun lokatsiyani yuboring!");
+    }
 
-            let msg = `♨️ **YANGI BUYURTMA**\n\n`;
-            msg += `👤 Mijoz: ${name}\n`;
-            msg += `📱 Tel: ${phone}\n`;
-            msg += `📦 Turi: ${deliveryType === 'delivery' ? 'Yetkazib berish' : 'Olib ketish'}\n`;
-            msg += `📍 Lokatsiya: ${location}\n\n`;
+    // Xabar matnini tayyorlash
+    let msg = `♨️ **YANGI BUYURTMA**\n\n`;
+    msg += `👤 Mijoz: ${name}\n`;
+    msg += `📱 Tel: ${phone}\n`;
+    msg += `📦 Turi: ${deliveryType === 'delivery' ? 'Yetkazib berish' : 'Olib ketish'}\n`;
+    msg += `📍 Lokatsiya: ${location}\n\n`;
+    
+    Object.values(cart).forEach(i => {
+        msg += `✅ ${i.name} (${i.qty}x) — ${(i.price * i.qty).toLocaleString()} s.\n`;
+    });
+    msg += `\n💰 **JAMI: ${document.getElementById('total-price').innerText}**`;
+
+    // --- ASOSIY QISM: Mini App orqali yuborish ---
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        
+        try {
+            // Ma'lumotni botga yuborish
+            tg.sendData(msg); 
             
-            Object.values(cart).forEach(i => {
-                msg += `✅ ${i.name} (${i.qty}x) — ${(i.price * i.qty).toLocaleString()} s.\n`;
-            });
-            msg += `\n💰 **JAMI: ${document.getElementById('total-price').innerText}**`;
-
-            // Mini App orqali yuborish
-            if (window.Telegram?.WebApp && window.Telegram.WebApp.initData) {
-                window.Telegram.WebApp.sendData(msg);
-            } else {
-                // To'g'ridan-to'g'ri API orqali
-                try {
-                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ chat_id: adminId, text: msg, parse_mode: "Markdown" })
-                    });
-                    alert("Buyurtmangiz yuborildi! ✅");
-                    toggleCart();
-                    cart = {};
-                    updateUI();
-                } catch (e) { alert("Xatolik!"); }
-            }
+            // Yuborgandan keyin Mini Appni yopish (ixtiyoriy)
+            tg.close(); 
+        } catch (e) {
+            console.error("SendData xatosi:", e);
+            alert("Mini App orqali yuborishda xatolik yuz berdi.");
         }
-
+    } else {
+        alert("Xatolik: Botni Telegram ilovasi ichida oching!");
+    }
+}
         // Birinchi yuklash
         filterMenu('all');
     </script>
