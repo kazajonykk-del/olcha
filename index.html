@@ -9,79 +9,108 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        @import url('<iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2724.2322298626123!2d71.20256397551432!3d41.017059618885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDAxJzAxLjQiTiA3McKwMTInMTguNSJF!5e1!3m2!1sru!2sus!4v1774647620665!5m2!1sru!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Plus+Jakarta+Sans:wght@400;800&display=swap');
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
             color: #fff; 
-            overflow-x: hidden; 
+            background-color: #000;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            transition: background 0.6s ease;
         }
-        
-        .font-oswald { font-family: 'Oswald', sans-serif; }
-        .glass { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        @keyframes cart-bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3) rotate(-10deg); }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: -1;
         }
-        .cart-added { animation: cart-bounce 0.5s ease-in-out; }
-
-        .product-card { 
-            background: #111; 
-            border-radius: 20px; 
-            border: 1px solid #222; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .product-card:hover { border-color: #eab308; transform: translateY(-5px); }
-        
-        .cat-btn.active { background: #eab308; color: #000; font-weight: 800; }
+        .cat-btn.active { background: #eab308 !important; color: #000 !important; font-weight: 800; transform: scale(1.05); }
+        .glass { background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(234, 179, 8, 0.2); }
+        .product-card { background: rgba(25, 25, 25, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; transition: 0.3s; }
+        .product-card:hover { border-color: #eab308; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .active-type { background: #eab308 !important; color: #000 !important; border-color: #eab308 !important; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <nav class="sticky top-0 z-50 glass px-4 py-4 border-b border-yellow-500/20">
+    <nav class="sticky top-0 z-50 glass px-4 py-4">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="font-oswald text-2xl text-yellow-500 uppercase flex items-center gap-2">
-                <span class="animate__animated animate__pulse animate__infinite">🍒</span> Olcha Cafe
-            </h1>
-            <button onclick="toggleCart()" id="cart-btn" class="relative bg-yellow-500 text-black p-3.5 rounded-2xl shadow-lg transition-all">
+            <h1 class="font-oswald text-2xl text-yellow-500 uppercase">🍒 Olcha Cafe</h1>
+            <button onclick="toggleCart()" class="relative bg-yellow-500 text-black p-3 rounded-2xl shadow-lg">
                 <i class="fas fa-shopping-basket text-xl"></i>
                 <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-[11px] w-6 h-6 flex items-center justify-center rounded-full font-bold border-2 border-black">0</span>
             </button>
         </div>
         
         <div class="flex overflow-x-auto gap-2.5 mt-4 no-scrollbar pt-2">
-            <button onclick="filterMenu('all')" class="cat-btn active px-6 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Barchasi</button>
-            <button onclick="filterMenu('lavash')" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Lavash</button>
-            <button onclick="filterMenu('doner')" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Doner</button>
-            <button onclick="filterMenu('burger')" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Burger</button>
-            <button onclick="filterMenu('hotdog')" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Hot-Dog</button>
-            <button onclick="filterMenu('kfc')" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">KFC & Fri</button>
+            <button onclick="filterMenu('all', this)" class="cat-btn active px-6 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Barchasi</button>
+            <button onclick="filterMenu('lavash', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Lavash</button>
+            <button onclick="filterMenu('burger', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Burger</button>
+            <button onclick="filterMenu('doner', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Doner</button>
+            <button onclick="filterMenu('hotdog', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">Hot-Dog</button>
+            <button onclick="filterMenu('kfc', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">KFC & Fri</button>
+            <button onclick="filterMenu('icecream', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">🍦 Muzqaymoq</button>
+            <button onclick="filterMenu('sous', this)" class="cat-btn bg-white/5 px-5 py-2 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap">🧂 Souslar</button>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 min-h-screen">
         <div id="menu-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
     </main>
 
-    <footer class="bg-[#080808] border-t-2 border-yellow-500/30 pt-16 pb-8 px-6 mt-10">
+    <div id="cart-modal" class="fixed inset-0 z-[100] hidden bg-black/95 flex justify-end">
+        <div class="w-full max-w-md bg-[#0a0a0a] h-full flex flex-col p-6 animate__animated animate__fadeInRight animate__faster">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+                <h2 class="text-yellow-500 text-2xl font-bold uppercase font-oswald">Savatcha</h2>
+                <button onclick="toggleCart()" class="text-4xl text-gray-500">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 no-scrollbar mb-4"></div>
+
+            <div class="space-y-3 border-t border-white/10 pt-4">
+                <input type="text" id="user-name" placeholder="Ismingiz..." class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-500">
+                <input type="tel" id="user-phone" placeholder="Telefon: +998..." class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-500">
+                
+                <div class="flex gap-2">
+                    <button onclick="setDelivery('takeout')" id="btn-takeout" class="flex-1 py-3 rounded-xl border border-white/10 active-type font-bold">🏃 Olib ketish</button>
+                    <button onclick="setDelivery('delivery')" id="btn-delivery" class="flex-1 py-3 rounded-xl border border-white/10 bg-white/5 font-bold">🚚 Yetkazish</button>
+                </div>
+
+                <div id="location-section" class="hidden animate__animated animate__fadeIn">
+                    <button onclick="getLocation()" id="loc-btn" class="w-full bg-blue-600/20 text-blue-400 py-3 rounded-xl font-bold border border-blue-500/30">📍 Lokatsiyani yuborish</button>
+                    <input type="hidden" id="user-location" value="Olib ketish">
+                </div>
+
+                <div class="flex justify-between items-center py-4">
+                    <span class="font-bold">JAMI:</span>
+                    <span id="total-price" class="text-2xl font-black text-yellow-500">0 so'm</span>
+                </div>
+                <button onclick="sendToTelegram()" class="w-full bg-green-600 py-4 rounded-xl font-black uppercase text-lg hover:bg-green-700 active:scale-95 transition-all">Tasdiqlash</button>
+            </div>
+        </div>
+        
+    </div>
+        <footer class="bg-black/95 border-t-2 border-yellow-500/30 pt-10 pb-8 px-6 mt-10">
         <div class="container mx-auto text-center">
-            <h3 class="font-oswald text-yellow-500 text-2xl mb-4 uppercase">📞 Buyurtma Berish</h3>
+            <h3 class="font-oswald text-yellow-500 text-xl mb-4 uppercase tracking-widest">📞 Buyurtma Berish</h3>
             <a href="tel:+998917677455" class="text-3xl font-black hover:text-yellow-500 transition">+998 91 767 74 55</a>
             
-            <div class="mt-10 mb-8">
-                <h3 class="font-oswald text-yellow-500 text-xl mb-4 uppercase">📍 Manzilimiz</h3>
+            <div class="mt-10 mb-8 max-w-2xl mx-auto">
+                <h3 class="font-oswald text-yellow-500 text-lg mb-4 uppercase">📍 Bizning Manzil</h3>
                 <div class="rounded-3xl overflow-hidden border border-white/10 h-64 shadow-2xl">
-                    <iframe 
-                        width="100%" height="100%" frameborder="0" style="border:0; filter: grayscale(1) invert(1);" 
-                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d752.5694248557933!2d71.2051389!3d41.0170556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDAxJzAxLjQiTiA3McKwMTInMTguNSJF!5e0!3m2!1suz!2s!4v1711580000000" allowfullscreen>
-                    </iframe>
+                    <iframe width="100%" height="100%" frameborder="0" style="border:0; filter: grayscale(1) invert(0.9);" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3013.123456789!2d71.23456789!3d41.123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDA3JzI0LjQiTiA3McKwMTQnMDQuNCJF!5e0!3m2!1suz!2s!4v123456789" allowfullscreen></iframe>
                 </div>
             </div>
 
-            <div class="flex justify-center gap-6 mb-10">
+            <div class="mt-8 mb-6">
+                <p class="text-yellow-500 font-bold text-lg italic">Bu sayt Azizbek Fayzullayev tomonidan yaratildi</p>
+            </div>
+
+            <div class="flex justify-center gap-6 mb-8">
                 <a href="https://instagram.com/OLCHA_KAFE" class="text-2xl text-gray-400 hover:text-pink-500"><i class="fab fa-instagram"></i></a>
                 <a href="https://t.me/OLCHA_KAFE" class="text-2xl text-gray-400 hover:text-blue-400"><i class="fab fa-telegram"></i></a>
             </div>
@@ -90,88 +119,123 @@
         </div>
     </footer>
 
-    <div id="cart-modal" class="fixed inset-0 z-[100] hidden flex justify-end bg-black/90 backdrop-blur-md">
-        <div class="w-full max-w-md bg-[#0a0a0a] h-full flex flex-col animate__animated animate__fadeInRight animate__faster">
-            <div class="p-6 flex justify-between items-center border-b border-white/10">
-                <h2 class="font-oswald text-2xl text-yellow-500 uppercase tracking-tighter">Savatcha</h2>
-                <button onclick="toggleCart()" class="text-4xl text-gray-500">×</button>
-            </div>
-            
-            <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-3 no-scrollbar"></div>
-
-            <div class="p-6 bg-black border-t border-white/10">
-                <div class="mb-3">
-                    <input type="text" id="user-name" placeholder="Ismingizni yozing..." class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-yellow-500 text-lg transition-all">
-                </div>
-                <div class="mb-4">
-                    <input type="tel" id="user-phone" placeholder="Telefon: +998..." class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-yellow-500 text-lg transition-all">
-                </div>
-
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-gray-400 font-bold">JAMI SUMMA:</span>
-                    <span id="total-price" class="text-2xl font-black text-yellow-500">0 so'm</span>
-                </div>
-                <button onclick="sendToTelegram()" class="w-full bg-green-600 py-4 rounded-xl font-black text-lg uppercase active:scale-95 transition-all shadow-lg shadow-green-900/20">Buyurtmani Tasdiqlash</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         const botToken = "8606183826:AAGP45P0lXtouI--kpRUvxoOGXbir_vNNTY";
         const adminId = "8769756029";
 
-        const menuData = [
-             // LAVASH
-            { id: 1, name: "Lavash Classic", price: 26000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500"  },
-            { id: 2, name: "Lavash Sirli", price: 30000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
-            { id: 3, name: "Lavash Tandir", price: 30000, cat: "lavash", img: "https://media.istockphoto.com/id/1183311685/photo/sandwich-kebab-burrito-chicken-pork-wrap-shawarma-street-food.jpg?s=612x612&w=0&k=20&c=6I6_t2yR_K17vL7f8eXk-9372U5Rk0f85v-U-l-k4-o=" },
-            { id: 4, name: "Lavash Tovuqli", price: 25000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500"  },
+       
+       const backgrounds = {
+    // Barchasi - Umumiy mazali food combo
+    all: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2000&auto=format&fit=crop",
 
-            // BURGER
-            { id: 5, name: "Burger Classic", price: 25000, cat: "burger", img: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500" },
-            { id: 6, name: "Burger Sirli", price: 30000, cat: "burger", img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500" },
-            { id: 7, name: "Burger 2X", price: 35000, cat: "burger", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=500" },
-            { id: 8, name: "Klab Sendvich", price: 30000, cat: "burger", img: "https://images.pexels.com/photos/1603901/pexels-photo-1603901.jpeg?w=400" },
+    // Lavash - Issiq va sershira lavash foni
+    lavash: "https://images.unsplash.com/photo-1628592102751-ba83b035e660?q=80&w=2000&auto=format&fit=crop",
 
-            // DONER
-            { id: 9, name: "Doner Classic", price: 24000, cat: "doner", img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500" },
-            { id: 10, name: "Doner Sirli", price: 28000, cat: "doner", img: "https://images.unsplash.com/photo-1642940250097-f58c704c3210?w=500" },
-            { id: 11, name: "Non Kabob", price: 30000, cat: "doner", img: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?w=400" },
+    // Burger - Suvli va katta burger tasviri
+    burger: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=2000&auto=format&fit=crop",
 
-            // HOT-DOG
-            { id: 12, name: "Hot-Dog Classic", price: 10000, cat: "hotdog", img: "https://images.unsplash.com/photo-1599599810694-b5b37304c041?w=500" },
-            { id: 13, name: "Hot-Dog 2 xisali", price: 12000, cat: "hotdog", img: "https://images.unsplash.com/photo-1612392062631-94dd858cba88?w=500" },
-            { id: 14, name: "Hot-Dog America", price: 14000, cat: "hotdog", img: "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?w=500" },
+    // Muzqaymoq - Muzdek va rang-barang muzqaymoqlar
+    icecream: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?q=80&w=2000&auto=format&fit=crop",
 
-            // KFC
-            { id: 15, name: "KFC Laxm", price: 20000, cat: "kfc", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500" },
-            { id: 16, name: "KFC Qanot", price: 20000, cat: "kfc", img: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500" },
-            { id: 17, name: "Kartoshka Fri", price: 10000, cat: "kfc", img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500" },
 
-            // ICHIMLIK
-            { id: 18, name: "Pepsi 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1629203851020-9dd4ac787364?w=500" },
-            { id: 19, name: "Coca-Cola 1.5 L", price: 15000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=500" },
-            { id: 20, name: "Choy (Krujka)", price: 2000, cat: "ichimlik", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
-        ];
+    // Lavash uchun yangi ishchi havola
+    lavash: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=1200",
 
-        
+    // Doner uchun maxsus, aniq va sifatli yangi rasm
+    doner: "https://images.unsplash.com/photo-1561651823-34feb02250e4?q=80&w=2000&auto=format&fit=crop",
+    
+    // Qolganlari o'zgarishsiz qolishi mumkin...
 
+
+    // KFC & Fri - Qovurilgan tovuq va kartoshka fri
+    kfc: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=2000&auto=format&fit=crop",
+
+    // Hot-Dog - Ishtahani ochuvchi hot-dog foni
+    hotdog: "https://images.unsplash.com/photo-1612392062631-94dd858cba88?q=80&w=2000&auto=format&fit=crop",
+};
+
+       const menuData = [
+    // --- HOT-DOG ---
+    { id: 101, name: "Hot-Dog", price: 10000, cat: "hotdog", img: "https://images.unsplash.com/photo-1599599810694-b5b37304c041?w=500" },
+    { id: 102, name: "Hot-Dog 2 Xisali", price: 12000, cat: "hotdog", img: "https://images.unsplash.com/photo-1612392062631-94dd858cba88?w=500" },
+    { id: 103, name: "Hot-Dog Canada", price: 14000, cat: "hotdog", img: "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?w=500" },
+    { id: 104, name: "Hot-Dog America", price: 14000, cat: "hotdog", img: "https://images.unsplash.com/photo-1599599810694-b5b37304c041?w=500" },
+    { id: 105, name: "Hot-Dog Goshtli", price: 16000, cat: "hotdog", img: "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?w=500" },
+    { id: 106, name: "Hot-Dog Tovuqli", price: 15000, cat: "hotdog", img: "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?w=500" },
+
+    // --- NON KABOB ---
+    // Eslatma: 'nonkabob' kategoriyasi navbarga qo'shilmagan bo'lsa, 'doner' ga qo'shishingiz mumkin.
+    { id: 201, name: "Non Kabob", price: 30000, cat: "doner", img: "https://media.istockphoto.com/id/1183311685/photo/sandwich-kebab-burrito-chicken-pork-wrap-shawarma-street-food.jpg?s=612x612&w=0&k=20&c=6I6_t2yR_K17vL7f8eXk-9372U5Rk0f85v-U-l-k4-o=" },
+    { id: 202, name: "Non Kabob Buyurtmali", price: 35000, cat: "doner", img: "https://media.istockphoto.com/id/1183311685/photo/sandwich-kebab-burrito-chicken-pork-wrap-shawarma-street-food.jpg?s=612x612&w=0&k=20&c=6I6_t2yR_K17vL7f8eXk-9372U5Rk0f85v-U-l-k4-o=" },
+
+    // --- KLAB SENDVICH ---
+    // Eslatma: 'burger' kategoriyasiga qo'shish yoki alohida kategoriya yaratish mumkin.
+    { id: 301, name: "Klab Sendvich", price: 30000, cat: "burger", img: "https://images.pexels.com/photos/1603901/pexels-photo-1603901.jpeg?w=400" },
+
+    // --- KFC & NUGGETS & FRI ---
+    { id: 401, name: "KFC Laxm", price: 20000, cat: "kfc", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500" },
+    { id: 402, name: "KFC Qanot", price: 20000, cat: "kfc", img: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500" },
+    { id: 403, name: "KFC 1 KG", price: 100000, cat: "kfc", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500" },
+    { id: 404, name: "Nuggets", price: 20000, cat: "kfc", img: "https://images.unsplash.com/photo-1562967914-608f82629710?w=500" },
+    { id: 405, name: "Kartoshka Fri", price: 10000, cat: "kfc", img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500" },
+
+    // --- LAVASH ---
+    { id: 501, name: "Lavash", price: 26000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+    { id: 502, name: "Lavash Sirli", price: 30000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+    { id: 503, name: "Lavash Tandir", price: 30000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+    { id: 504, name: "Lavash Tovuqli", price: 25000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+    { id: 505, name: "Lavash Buyurtmali", price: 35000, cat: "lavash", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+
+    // --- DONER ---
+    { id: 601, name: "Doner", price: 24000, cat: "doner", img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500" },
+    { id: 602, name: "Doner Sirli", price: 28000, cat: "doner", img: "https://images.unsplash.com/photo-1642940250097-f58c704c3210?w=500" },
+    { id: 603, name: "Doner Tovuqli", price: 22000, cat: "doner", img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500" },
+    { id: 604, name: "Doner Buyurtmali", price: 30000, cat: "doner", img: "https://images.unsplash.com/photo-1642940250097-f58c704c3210?w=500" },
+
+    // --- BURGER ---
+    { id: 701, name: "Burger", price: 25000, cat: "burger", img: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500" },
+    { id: 702, name: "Burger Sirli", price: 30000, cat: "burger", img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500" },
+    { id: 703, name: "Burger 2X", price: 35000, cat: "burger", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=500" },
+
+
+    // ... boshqa taomlar ...
+
+    // SOUSLAR (cat: "sous" bo'lishi shart)
+    { id: 801, name: "Xalapeno", price: 3000, cat: "sous", img: "https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?w=400" },
+    { id: 802, name: "Sous Chesnochniy", price: 3000, cat: "sous", img: "https://images.pexels.com/photos/6163266/pexels-photo-6163266.jpeg?w=400" },
+    { id: 803, name: "Sous Sirniy", price: 3000, cat: "sous", img: "https://images.pexels.com/photos/1435740/pexels-photo-1435740.jpeg?w=400" },
+    { id: 804, name: "Sous Tomatniy", price: 3000, cat: "sous", img: "https://images.pexels.com/photos/6163266/pexels-photo-6163266.jpeg?w=400" },
+    { id: 805, name: "Mayonez / Ketchup", price: 3000, cat: "sous", img: "https://images.pexels.com/photos/1435740/pexels-photo-1435740.jpeg?w=400" },
+
+  { id: 805, name: "Mayanez, Ketchup", price: 3000, cat: "ichimlik", img: "https://images.pexels.com/photos/1435740/pexels-photo-1435740.jpeg?w=400" },
+  // --- MUZQAYMOQLAR ---
+{ id: 901, name: "Muzqaymoq (Kichkina)", price: 3000, cat: "icecream", img: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=500" },
+{ id: 902, name: "Muzqaymoq (O'rtancha)", price: 5000, cat: "icecream", img: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=500" },
+{ id: 903, name: "Muzqaymoq (Katta)", price: 8000, cat: "icecream", img: "https://images.unsplash.com/photo-1560008581-09826d1de69e?w=500" },
+{ id: 904, name: "Muzqaymoq (1 kg)", price: 50000, cat: "icecream", img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500" },
+];
         let cart = {};
+        let deliveryType = 'takeout';
 
-        function renderMenu(category = 'all') {
+        function filterMenu(category, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            else document.querySelector("button[onclick*='all']").classList.add('active');
+
+            document.body.style.backgroundImage = `url('${backgrounds[category] || backgrounds.all}')`;
+
             const grid = document.getElementById('menu-grid');
             const filtered = category === 'all' ? menuData : menuData.filter(x => x.cat === category);
+            
             grid.innerHTML = filtered.map(p => `
-                <div class="product-card animate__animated animate__fadeInUp">
-                    <img src="${p.img}" class="w-full h-32 object-cover rounded-t-2xl">
-                    <div class="p-4">
-                        <h3 class="text-[11px] font-extrabold uppercase truncate text-white/90">${p.name}</h3>
-                        <div class="flex justify-between items-center mt-3">
-                            <span class="text-yellow-500 font-black text-sm">${p.price.toLocaleString()} s.</span>
-                            <button onclick="addToCart(${p.id})" class="bg-yellow-500 text-black w-8 h-8 rounded-lg flex items-center justify-center active:scale-75 transition-all">
-                                <i class="fas fa-plus text-xs"></i>
-                            </button>
-                        </div>
+                <div class="product-card p-3 animate__animated animate__fadeInUp">
+                    <img src="${p.img}" class="w-full h-28 object-cover rounded-xl mb-3">
+                    <h3 class="text-[11px] font-bold uppercase truncate">${p.name}</h3>
+                    <div class="flex justify-between items-center mt-3">
+                        <span class="text-yellow-500 font-bold text-xs">${p.price.toLocaleString()} s.</span>
+                        <button onclick="addToCart(${p.id})" class="bg-yellow-500 text-black w-8 h-8 rounded-lg flex items-center justify-center active:scale-75 transition-all">
+                            <i class="fas fa-plus text-xs"></i>
+                        </button>
                     </div>
                 </div>`).join('');
         }
@@ -179,32 +243,27 @@
         function addToCart(id) {
             const p = menuData.find(x => x.id === id);
             cart[id] = cart[id] ? { ...cart[id], qty: cart[id].qty + 1 } : { ...p, qty: 1 };
-            const cartBtn = document.getElementById('cart-btn');
-            cartBtn.classList.add('cart-added');
-            setTimeout(() => cartBtn.classList.remove('cart-added'), 500);
             updateUI();
         }
 
         function updateUI() {
             const itemsCont = document.getElementById('cart-items');
-            const cartCount = document.getElementById('cart-count');
-            const totalPrice = document.getElementById('total-price');
             let total = 0, count = 0, html = "";
             Object.values(cart).forEach(item => {
                 total += item.price * item.qty;
                 count += item.qty;
-                html += `<div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
-                    <div class="flex-1 font-bold text-xs uppercase">${item.name}</div>
-                    <div class="flex items-center gap-2">
+                html += `<div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5">
+                    <div class="text-[10px] font-bold uppercase w-1/2">${item.name}</div>
+                    <div class="flex items-center gap-3">
                         <button onclick="changeQty(${item.id}, -1)" class="w-7 h-7 bg-white/10 rounded-full">-</button>
-                        <span class="text-sm font-black">${item.qty}</span>
+                        <span class="font-bold text-sm">${item.qty}</span>
                         <button onclick="changeQty(${item.id}, 1)" class="w-7 h-7 bg-white/10 rounded-full">+</button>
                     </div>
                 </div>`;
             });
-            itemsCont.innerHTML = html || '<p class="text-center opacity-20 py-10 uppercase text-xs font-black tracking-widest">Savat bo\'sh</p>';
-            cartCount.innerText = count;
-            totalPrice.innerText = total.toLocaleString() + " so'm";
+            itemsCont.innerHTML = html || '<p class="text-center opacity-20 py-10">Savat bo\'sh</p>';
+            document.getElementById('cart-count').innerText = count;
+            document.getElementById('total-price').innerText = total.toLocaleString() + " so'm";
         }
 
         function changeQty(id, delta) {
@@ -215,44 +274,69 @@
 
         function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
 
-        function filterMenu(cat) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            renderMenu(cat);
+        function setDelivery(type) {
+            deliveryType = type;
+            document.getElementById('btn-takeout').classList.toggle('active-type', type === 'takeout');
+            document.getElementById('btn-delivery').classList.toggle('active-type', type === 'delivery');
+            document.getElementById('location-section').classList.toggle('hidden', type === 'takeout');
+            if(type === 'takeout') document.getElementById('user-location').value = "Olib ketish";
+        }
+
+        function getLocation() {
+            const btn = document.getElementById('loc-btn');
+            btn.innerText = "Aniqlanmoqda...";
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    const link = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    document.getElementById('user-location').value = link;
+                    btn.innerText = "Lokatsiya saqlandi ✅";
+                    btn.classList.replace('text-blue-400', 'text-green-400');
+                }, () => { alert("Ruxsat berilmadi!"); btn.innerText = "Xatolik!"; });
+            }
         }
 
         async function sendToTelegram() {
             const name = document.getElementById('user-name').value;
             const phone = document.getElementById('user-phone').value;
-            
-            if (Object.keys(cart).length === 0) return alert("Savat bo'sh!");
-            if (!name) return alert("Iltimos, ismingizni kiriting!");
-            if (!phone || phone.length < 9) return alert("Telefon raqamingizni to'liq yozing!");
+            const location = document.getElementById('user-location').value;
 
-            let msg = "♨️ **YANGI BUYURTMA**\n\n";
-            msg += `👤 **Mijoz:** ${name}\n`;
-            msg += `📱 **Tel:** ${phone}\n`;
-            msg += `----------------------------\n`;
-            Object.values(cart).forEach(i => msg += `✅ ${i.name} (${i.qty}x) — ${(i.price*i.qty).toLocaleString()} s.\n`);
+            if (Object.keys(cart).length === 0 || !name || !phone) return alert("Ma'lumotlarni to'ldiring!");
+            if (deliveryType === 'delivery' && (location === 'Olib ketish' || !location.includes('http'))) {
+                return alert("Iltimos, lokatsiyani yuboring!");
+            }
+
+            let msg = `♨️ **YANGI BUYURTMA**\n\n`;
+            msg += `👤 Mijoz: ${name}\n`;
+            msg += `📱 Tel: ${phone}\n`;
+            msg += `📦 Turi: ${deliveryType === 'delivery' ? 'Yetkazib berish' : 'Olib ketish'}\n`;
+            msg += `📍 Lokatsiya: ${location}\n\n`;
+            
+            Object.values(cart).forEach(i => {
+                msg += `✅ ${i.name} (${i.qty}x) — ${(i.price * i.qty).toLocaleString()} s.\n`;
+            });
             msg += `\n💰 **JAMI: ${document.getElementById('total-price').innerText}**`;
 
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: adminId, text: msg, parse_mode: "Markdown" })
-                });
-                if (response.ok) {
+            // Mini App orqali yuborish
+            if (window.Telegram?.WebApp && window.Telegram.WebApp.initData) {
+                window.Telegram.WebApp.sendData(msg);
+            } else {
+                // To'g'ridan-to'g'ri API orqali
+                try {
+                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ chat_id: adminId, text: msg, parse_mode: "Markdown" })
+                    });
                     alert("Buyurtmangiz yuborildi! ✅");
+                    toggleCart();
                     cart = {};
                     updateUI();
-                    toggleCart();
-                    if (window.Telegram?.WebApp) window.Telegram.WebApp.close();
-                }
-            } catch (e) { alert("Xatolik yuz berdi!"); }
+                } catch (e) { alert("Xatolik!"); }
+            }
         }
 
-        renderMenu();
+        // Birinchi yuklash
+        filterMenu('all');
     </script>
 </body>
 </html>
