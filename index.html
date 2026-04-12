@@ -757,24 +757,50 @@ async function sendToTelegram() {
     const phone = document.getElementById('user-phone').value;
     const location = document.getElementById('user-location').value;
 
-    if (Object.keys(cart).length === 0 || !name || !phone) return alert("Ma'lumotlarni to'ldiring!");
+    if (Object.keys(cart).length === 0 || !name || !phone) {
+        return alert("Ma'lumotlarni to'ldiring! 🍒");
+    }
 
-    let msg = `♨️ YANGI BUYURTMA\n\n`; 
+    // BOT SOZLAMALARI (SHU YERNI TEKSHIR)
+    const token = "8606183826:AAGP45P0lXtouI--kpRUvxoOGXbir_vNNTY";
+    const adminId = "8769756029";
+
+    let msg = `🔥 VIP BUYURTMA KELDI!\n`;
     msg += `👤 Mijoz: ${name}\n`;
-    msg += `📱 Tel: ${phone}\n`;
-    msg += `📦 Turi: ${deliveryType === 'delivery' ? 'Yetkazib berish' : 'Olib ketish'}\n`;
-    msg += `📍 Lokatsiya: ${location}\n\n`;
+    msg += `📞 Tel: ${phone}\n`;
+    msg += `📍 Lokatsiya: ${location}\n`;
+    msg += `━━━━━━━━━━━━━━\n`;
     
     Object.values(cart).forEach(i => {
-        msg += `✅ ${i.name} (${i.qty}x) — ${(i.price * i.qty).toLocaleString()} s.\n`;
+        msg += `✅ ${i.name} (${i.qty}x)\n`;
     });
-    msg += `\n💰 JAMI: ${document.getElementById('total-price').innerText}`;
+    
+    msg += `━━━━━━━━━━━━━━\n`;
+    msg += `💰 JAMI: ${document.getElementById('total-price').innerText}`;
 
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.sendData(msg);
-        window.Telegram.WebApp.close(); 
-    } else {
-        alert("Botni Telegram ichida oching!");
+    // 1. ADMINGA TO'G'RIDAN-TO'G'RI YUBORISH (FETCH)
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: adminId,
+                text: msg
+            })
+        });
+
+        if (response.ok) {
+            // 2. MIJOZGA TASDIQLASH VA OYNANI YOPISH
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.sendData(msg); // Bot chatiga ham yuboradi
+                alert("Buyurtmangiz qabul qilindi! ✅");
+                window.Telegram.WebApp.close();
+            }
+        } else {
+            alert("Botga yuborishda xatolik! Token yoki ID noto'g'ri.");
+        }
+    } catch (e) {
+        alert("Internet xatosi!");
     }
 }
 // 1.3 soniya kutib loader-ekranini yashirish
